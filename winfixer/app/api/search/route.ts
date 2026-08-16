@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 import { z } from 'zod';
-
-const supabase = createClient();
 
 const searchSchema = z.object({
   query: z.string().min(1, 'Search query is required'),

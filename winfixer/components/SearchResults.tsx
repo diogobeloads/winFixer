@@ -11,7 +11,6 @@ interface SearchResultsProps {
   results?: SearchResult[];
   onDiagnose?: (code: string) => void;
   setQuery?: any;
-  onDiagnose?: any;
   [key: string]: any;
 }
 
@@ -27,7 +26,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results = [], onDiagnose 
               <p className="text-sm text-gray-500">{result.description}</p>
               <p className="text-sm text-green-600">{result.relevance}</p>
               <button
-                onClick={() => onDiagnose(result.code)}
+                onClick={() => onDiagnose && onDiagnose(result.code)}
                 className="mt-2 bg-blue-500 text-white py-1 px-3 rounded"
               >
                 Diagnosticar

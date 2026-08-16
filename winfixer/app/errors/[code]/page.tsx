@@ -1,14 +1,16 @@
-import { useRouter } from 'next/router';
+'use client';
+
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import ErrorCard from '../../../components/ErrorCard';
 import { supabase } from '../../../lib/supabase/client';
 
 const ErrorPage = () => {
-  const router = useRouter();
-  const { code } = router.query;
-  const [errorData, setErrorData] = useState(null);
+  const params = useParams();
+  const code = params?.code as string | undefined;
+  const [errorData, setErrorData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchErrorData = async () => {

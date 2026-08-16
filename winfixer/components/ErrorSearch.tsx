@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState } from 'react';
 
-const ErrorSearch: React.FC<{ onSearch: (query: string) => void }> = ({ onSearch }) => {
+const ErrorSearch: React.FC<{ onSearch: (query: string) => void, setQuery?: (q: string) => void }> = ({ onSearch, setQuery }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {

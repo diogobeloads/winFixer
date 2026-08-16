@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import ErrorSearch from '@/components/ErrorSearch';
 import SearchResults from '@/components/SearchResults';
@@ -6,9 +8,9 @@ const SearchPage = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
 
-  const handleSearch = async (searchQuery) => {
+  const handleSearch = async (searchQuery: string) => {
     // Call the API to search for errors
-    const response = await fetch(`/api/search?q=${searchQuery}`);
+    const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
     const data = await response.json();
     setResults(data);
   };

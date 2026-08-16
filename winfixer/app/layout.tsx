@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from '../components/Header';
-import '../globals.css';
+import './globals.css';
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body>

@@ -1,18 +1,20 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase/client';
 import DiagnosticQuestion from '@/components/DiagnosticQuestion';
 import DiagnosticProgress from '@/components/DiagnosticProgress';
 import FixFeedback from '@/components/FixFeedback';
 
 const DiagnosePage = () => {
-  const router = useRouter();
-  const { sessionId } = router.query;
-  const [sessionData, setSessionData] = useState(null);
+  const params = useParams();
+  const sessionId = params?.sessionId as string | undefined;
+  const [sessionData, setSessionData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [feedback, setFeedback] = useState(null);
+  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [feedback, setFeedback] = useState<any>(null);
 
   useEffect(() => {
     const fetchSessionData = async () => {
