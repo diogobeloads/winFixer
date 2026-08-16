@@ -7,6 +7,8 @@
   "/admin/page": "app/admin/page.js",
   "/admin/tests/page": "app/admin/tests/page.js",
   "/api/admin/route": "app/api/admin/route.js",
+  "/api/diagnose/answer/route": "app/api/diagnose/answer/route.js",
+  "/api/diagnose/complete/route": "app/api/diagnose/complete/route.js",
   "/api/diagnose/route": "app/api/diagnose/route.js",
   "/api/feedback/route": "app/api/feedback/route.js",
   "/api/search/route": "app/api/search/route.js",

@@ -3,12 +3,14 @@ import { supabase } from '@/lib/supabase/client';
 import { z } from 'zod';
 
 const searchSchema = z.object({
-  query: z.string().trim().min(1, 'Search query is required').max(120, 'Search query is too long'),
+  query: z
+    .string()
+    .trim()
+    .min(1, 'Search query is required')
+    .max(120, 'Search query is too long'),
 });
 
 function sanitizePostgrestSearch(value: string) {
-  // O filtro .or() do PostgREST usa uma sintaxe própria.
-  // Removemos caracteres que poderiam quebrar a expressão do filtro.
   return value
     .replace(/[(),]/g, ' ')
     .replace(/[%_*]/g, ' ')
@@ -20,7 +22,9 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const rawQuery = searchParams.get('q') || '';
 
-  const validationResult = searchSchema.safeParse({ query: rawQuery });
+  const validationResult = searchSchema.safeParse({
+    query: rawQuery,
+  });
 
   if (!validationResult.success) {
     return NextResponse.json(
@@ -36,10 +40,12 @@ export async function GET(request: Request) {
     return NextResponse.json([]);
   }
 
-  const normalizedCode = query.replace(/^0x/i, '').replace(/[^a-fA-F0-9]/g, '').toLowerCase();
+  const normalizedCode = query
+    .replace(/^0x/i, '')
+    .replace(/[^a-fA-F0-9]/g, '')
+    .toLowerCase();
 
-  // 1) Primeiro tentamos o código normalizado. Isso faz com que
-  // "0x80070005" também encontre "80070005" no banco.
+  // Busca exata por código
   if (normalizedCode) {
     const { data: exactMatches, error: exactError } = await supabase
       .from('errors')
@@ -49,8 +55,11 @@ export async function GET(request: Request) {
 
     if (exactError) {
       console.error('Exact error search failed:', exactError);
+
       return NextResponse.json(
-        { error: 'Não foi possível consultar a base de erros.' },
+        {
+          error: 'Não foi possível consultar a base de erros.',
+        },
         { status: 500 }
       );
     }
@@ -60,7 +69,7 @@ export async function GET(request: Request) {
     }
   }
 
-  // 2) Depois procuramos por texto no código, título e descrição.
+  // Busca textual por código, título ou descrição
   const { data, error } = await supabase
     .from('errors')
     .select('*')
@@ -72,8 +81,11 @@ export async function GET(request: Request) {
 
   if (error) {
     console.error('Text error search failed:', error);
+
     return NextResponse.json(
-      { error: 'Não foi possível consultar a base de erros.' },
+      {
+        error: 'Não foi possível consultar a base de erros.',
+      },
       { status: 500 }
     );
   }

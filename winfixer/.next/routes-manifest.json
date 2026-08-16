@@ -101,6 +101,18 @@
       "namedRegex": "^/api/diagnose(?:/)?$"
     },
     {
+      "page": "/api/diagnose/answer",
+      "regex": "^/api/diagnose/answer(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/diagnose/answer(?:/)?$"
+    },
+    {
+      "page": "/api/diagnose/complete",
+      "regex": "^/api/diagnose/complete(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/diagnose/complete(?:/)?$"
+    },
+    {
       "page": "/api/feedback",
       "regex": "^/api/feedback(?:/)?$",
       "routeKeys": {},

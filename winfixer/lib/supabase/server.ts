@@ -1,31 +1,27 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.warn('SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is not defined. Server supabase client will be a no-op stub for build/runtime without env vars.');
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error(
+    'Supabase server client: NEXT_PUBLIC_SUPABASE_URL ou NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY não configurada.'
+  );
 }
 
-// Create a real client only when env vars are present. Otherwise export a small stub
-// to avoid throwing at build time. The stub returns empty results or an error message
-// when operations are attempted.
-let supabaseInstance: any;
-if (supabaseUrl && supabaseServiceKey) {
-  supabaseInstance = createClient(supabaseUrl, supabaseServiceKey);
-} else {
-  const stubQuery = () => ({
-    select: async () => ({ data: [], error: null }),
-    insert: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
-    order: () => stubQuery(),
-    eq: () => stubQuery(),
-    or: () => stubQuery(),
-    single: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
-  });
-  supabaseInstance = {
-    from: (_table: string) => stubQuery(),
-    rpc: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
-  };
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error(
+    'Supabase não configurado. Verifique NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+  );
 }
 
-export const supabase = supabaseInstance;
+export const supabase = createClient(
+  supabaseUrl,
+  supabaseAnonKey,
+  {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  }
+);

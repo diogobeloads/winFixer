@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///D:/WinFixer/winfixer/app/not-found.tsx"],"sourcesContent":["import React from 'react';\n\nconst NotFound = () => {\n    return (\n        <div className=\"flex flex-col items-center justify-center h-screen\">\n            <h1 className=\"text-4xl font-bold\">404 - Página Não Encontrada</h1>\n            <p className=\"mt-4 text-lg\">Desculpe, a página que você está procurando não existe.</p>\n            <a href=\"/\" className=\"mt-6 text-blue-500 hover:underline\">Voltar para a Home</a>\n        </div>\n    );\n};\n\nexport default NotFound;"],"names":["NotFound","className","href"],"mappings":";;;;;;AAEA,MAAMA,WAAW;IACb,qBACI,0PAAC;QAAIC,WAAU;;0BACX,0PAAC;gBAAGA,WAAU;0BAAqB;;;;;;0BACnC,0PAAC;gBAAEA,WAAU;0BAAe;;;;;;0BAC5B,0PAAC;gBAAEC,MAAK;gBAAID,WAAU;0BAAqC;;;;;;;;;;;;AAGvE;uCAEeD"}}]
+}

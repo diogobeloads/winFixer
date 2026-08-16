@@ -153,11 +153,13 @@ export default function ErrorPage() {
 
       const data = await response.json();
 
-      if (!response.ok || !data?.[0]?.id) {
-        throw new Error(data?.error || 'Não foi possível iniciar o diagnóstico.');
-      }
+      if (!response.ok || !data?.id) {
+  throw new Error(
+    data?.error || 'Não foi possível iniciar o diagnóstico.'
+  );
+}
 
-      router.push(`/diagnose/${data[0].id}`);
+router.push(`/diagnose/${data.id}`);
     } catch (error) {
       setPageError(error instanceof Error ? error.message : 'Não foi possível iniciar o diagnóstico.');
       setStartingContext(null);

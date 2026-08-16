@@ -7,6 +7,8 @@
   "/admin/page": "/admin",
   "/admin/tests/page": "/admin/tests",
   "/api/admin/route": "/api/admin",
+  "/api/diagnose/answer/route": "/api/diagnose/answer",
+  "/api/diagnose/complete/route": "/api/diagnose/complete",
   "/api/diagnose/route": "/api/diagnose",
   "/api/feedback/route": "/api/feedback",
   "/api/search/route": "/api/search",

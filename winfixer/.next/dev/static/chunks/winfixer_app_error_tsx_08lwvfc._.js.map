@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///D:/WinFixer/winfixer/app/error.tsx"],"sourcesContent":["'use client';\n\nimport React from 'react';\n\nconst ErrorPage = () => {\n    return (\n        <div className=\"flex flex-col items-center justify-center h-screen\">\n            <h1 className=\"text-4xl font-bold text-red-600\">Ocorreu um erro!</h1>\n            <p className=\"mt-4 text-lg\">Desculpe, algo deu errado. Por favor, tente novamente mais tarde.</p>\n        </div>\n    );\n};\n\nexport default ErrorPage;"],"names":["ErrorPage","className"],"mappings":";;;;;AAAA;;AAIA,MAAMA,YAAY;IACd,qBACI,yMAAC;QAAIC,WAAU;;0BACX,yMAAC;gBAAGA,WAAU;0BAAkC;;;;;;0BAChD,yMAAC;gBAAEA,WAAU;0BAAe;;;;;;;;;;;;AAGxC;KAPMD;uCASSA"}}]
+}
