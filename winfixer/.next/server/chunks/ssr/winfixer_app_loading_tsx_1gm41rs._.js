@@ -1,0 +1,3 @@
+module.exports=[89026,a=>{"use strict";a.s(["default",()=>b]);let b=(0,a.i(31972).registerClientReference)(function(){throw Error("Attempted to call the default export of [project]/winfixer/app/loading.tsx from the server, but it's on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.")},"[project]/winfixer/app/loading.tsx","default")},33508,a=>{"use strict";var b=a.i(89026);a.n(b)},60076,function(a){a.n(a.i(33508))}];
+
+//# sourceMappingURL=winfixer_app_loading_tsx_1gm41rs._.js.map

@@ -1,0 +1,18 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/errors/page": "app/admin/errors/page.js",
+  "/admin/evidence/page": "app/admin/evidence/page.js",
+  "/admin/fixes/page": "app/admin/fixes/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/tests/page": "app/admin/tests/page.js",
+  "/api/admin/route": "app/api/admin/route.js",
+  "/api/diagnose/route": "app/api/diagnose/route.js",
+  "/api/feedback/route": "app/api/feedback/route.js",
+  "/api/search/route": "app/api/search/route.js",
+  "/diagnose/[sessionId]/page": "app/diagnose/[sessionId]/page.js",
+  "/errors/[code]/page": "app/errors/[code]/page.js",
+  "/login/page": "app/login/page.js",
+  "/page": "app/page.js",
+  "/search/page": "app/search/page.js"
+}

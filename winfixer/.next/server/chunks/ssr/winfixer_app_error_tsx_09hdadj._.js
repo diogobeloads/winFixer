@@ -1,0 +1,3 @@
+module.exports=[19380,a=>{"use strict";var b=a.i(2492);a.s(["default",0,()=>(0,b.jsxs)("div",{className:"flex flex-col items-center justify-center h-screen",children:[(0,b.jsx)("h1",{className:"text-4xl font-bold text-red-600",children:"Ocorreu um erro!"}),(0,b.jsx)("p",{className:"mt-4 text-lg",children:"Desculpe, algo deu errado. Por favor, tente novamente mais tarde."})]})])}];
+
+//# sourceMappingURL=winfixer_app_error_tsx_09hdadj._.js.map

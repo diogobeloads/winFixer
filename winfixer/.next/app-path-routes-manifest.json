@@ -1,0 +1,18 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/errors/page": "/admin/errors",
+  "/admin/evidence/page": "/admin/evidence",
+  "/admin/fixes/page": "/admin/fixes",
+  "/admin/page": "/admin",
+  "/admin/tests/page": "/admin/tests",
+  "/api/admin/route": "/api/admin",
+  "/api/diagnose/route": "/api/diagnose",
+  "/api/feedback/route": "/api/feedback",
+  "/api/search/route": "/api/search",
+  "/diagnose/[sessionId]/page": "/diagnose/[sessionId]",
+  "/errors/[code]/page": "/errors/[code]",
+  "/login/page": "/login",
+  "/page": "/",
+  "/search/page": "/search"
+}

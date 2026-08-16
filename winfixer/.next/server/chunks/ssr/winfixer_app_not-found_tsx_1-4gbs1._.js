@@ -1,0 +1,3 @@
+module.exports=[31758,a=>{"use strict";var b=a.i(76349);a.s(["default",0,()=>(0,b.jsxs)("div",{className:"flex flex-col items-center justify-center h-screen",children:[(0,b.jsx)("h1",{className:"text-4xl font-bold",children:"404 - Página Não Encontrada"}),(0,b.jsx)("p",{className:"mt-4 text-lg",children:"Desculpe, a página que você está procurando não existe."}),(0,b.jsx)("a",{href:"/",className:"mt-6 text-blue-500 hover:underline",children:"Voltar para a Home"})]})])},47795,function(a){a.n(a.i(31758))}];
+
+//# sourceMappingURL=winfixer_app_not-found_tsx_1-4gbs1._.js.map
