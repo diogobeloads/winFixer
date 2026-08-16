@@ -4,7 +4,7 @@ import './globals.css';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
+    <html lang="PT-BR">
       <body>
         <Header />
         <main>{children}</main>
