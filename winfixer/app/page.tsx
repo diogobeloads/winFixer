@@ -11,7 +11,9 @@ const HomePage = () => {
         <p className="mt-2 text-lg text-center text-gray-600">
           Diagnostique e resolva erros do Windows.
         </p>
-        <ErrorSearch />
+        <ErrorSearch onSearch={function (query: string): void {
+          throw new Error('Function not implemented.');
+        } } />
       </main>
     </div>
   );
