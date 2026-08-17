@@ -1,66 +1,105 @@
 'use client';
 
-import React from 'react';
+import { useState } from 'react';
 
+// Ajuste a tipagem das props de acordo com o que o componente já recebe
 interface FixFeedbackProps {
-  onFeedbackSubmit?: (result: any, notes?: any) => void;
-  onFeedback?: (result: any) => void;
-  [key: string]: any;
+  sessionId: string;
+  fixId: string;
 }
 
-const FixFeedback: React.FC<FixFeedbackProps> = ({ onFeedbackSubmit, onFeedback }) => {
-  const [result, setResult] = React.useState<any>('worked');
-  const [notes, setNotes] = React.useState<any>('');
+export default function FixFeedback({ sessionId, fixId }: FixFeedbackProps) {
+  const [result, setResult] = useState('');
+  const [notes, setNotes] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (onFeedbackSubmit) onFeedbackSubmit(result, notes);
-    if (onFeedback) onFeedback(result);
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          session_id: sessionId,
+          fix_id: fixId,
+          result: result,
+          notes: notes,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao enviar o feedback.');
+      }
+
+      setIsSuccess(true);
+    } catch (error: any) {
+      console.error(error);
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-lg font-semibold">Esta solução resolveu o problema?</h2>
-      <div className="flex space-x-4">
-        <label>
-          <input
-            type="radio"
-            value="worked"
-            checked={result === 'worked'}
-            onChange={() => setResult('worked')}
-          />
-          Sim, resolveu
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="did_not_work"
-            checked={result === 'did_not_work'}
-            onChange={() => setResult('did_not_work')}
-          />
-          Não resolveu
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="partially_worked"
-            checked={result === 'partially_worked'}
-            onChange={() => setResult('partially_worked')}
-          />
-          Parcialmente
-        </label>
+  if (isSuccess) {
+    return (
+      <div className="p-4 bg-green-50 text-green-700 rounded-md">
+        <p><strong>Sucesso!</strong> Seu feedback foi enviado e gravado com sucesso.</p>
       </div>
-      <textarea
-        placeholder="Notas adicionais..."
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        className="w-full p-2 border rounded"
-      />
-      <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
-        Enviar Feedback
-      </button>
-    </form>
-  );
-};
+    );
+  }
 
-export default FixFeedback;
+  return (
+    <div className="mt-6 p-4 border rounded-md shadow-sm">
+      <h3 className="text-lg font-semibold mb-4">A solução funcionou?</h3>
+      
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium mb-1">Resultado:</label>
+          <select 
+            value={result} 
+            onChange={(e) => setResult(e.target.value)}
+            required
+            className="w-full border rounded p-2"
+          >
+            <option value="" disabled>Selecione uma opção...</option>
+            <option value="success">Sim, resolveu meu problema</option>
+            <option value="partial">Melhorou, mas não resolveu 100%</option>
+            <option value="failed">Não, o problema continua</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-1">Observações (opcional):</label>
+          <textarea 
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            rows={3}
+            className="w-full border rounded p-2"
+            placeholder="Detalhe o que aconteceu após aplicar a solução..."
+          />
+        </div>
+
+        {errorMessage && (
+          <p className="text-red-600 text-sm">{errorMessage}</p>
+        )}
+
+        <button 
+          type="submit" 
+          disabled={isSubmitting}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+        >
+          {isSubmitting ? 'Enviando...' : 'Enviar Feedback'}
+        </button>
+      </form>
+    </div>
+  );
+}

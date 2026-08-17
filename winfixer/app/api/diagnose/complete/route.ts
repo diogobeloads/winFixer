@@ -88,6 +88,10 @@ export async function POST(request: Request) {
       validationResult.data;
 
     console.log(
+      '========================================'
+    );
+
+    console.log(
       'COMPLETE DIAGNOSIS:',
       sessionId
     );
@@ -132,6 +136,11 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log(
+      'SESSION DATA:',
+      session
+    );
+
     /*
      * ============================================================
      * 3. NORMALIZAR RESPOSTAS
@@ -175,9 +184,29 @@ export async function POST(request: Request) {
 
     /*
      * ============================================================
-     * 4. BUSCAR REGRAS DO CONTEXTO
+     * 4. BUSCAR REGRAS
+     *
+     * IMPORTANTE:
+     * Neste momento removemos temporariamente o filtro
+     * "status = published".
+     *
+     * O objetivo é descobrir se o problema está no filtro
+     * ou na consulta ao Supabase.
      * ============================================================
      */
+
+    console.log(
+      '========================================'
+    );
+
+    console.log(
+      'SEARCHING DIAGNOSTIC RULES'
+    );
+
+    console.log(
+      'CONTEXT ID USED:',
+      session.context_id
+    );
 
     const {
       data: rules,
@@ -189,13 +218,25 @@ export async function POST(request: Request) {
         'context_id',
         session.context_id
       )
-      .eq(
-        'status',
-        'published'
-      )
       .order('priority', {
         ascending: true,
       });
+
+    console.log(
+      'RULES WITHOUT STATUS FILTER:',
+      rules
+    );
+
+    console.log(
+      'RULES QUERY ERROR:',
+      rulesError
+    );
+
+    /*
+     * ============================================================
+     * 5. TRATAMENTO DE ERRO DAS REGRAS
+     * ============================================================
+     */
 
     if (rulesError) {
       console.error(
@@ -212,20 +253,46 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(
-      'DIAGNOSTIC RULES:',
-      rules
-    );
+    /*
+     * ============================================================
+     * 6. VERIFICAR SE EXISTEM REGRAS
+     * ============================================================
+     */
+
+    if (!rules || rules.length === 0) {
+      console.warn(
+        'NO RULES FOUND FOR CONTEXT:',
+        session.context_id
+      );
+
+      return NextResponse.json({
+        success: true,
+
+        diagnosis: null,
+
+        fix: null,
+
+        message:
+          'Nenhuma regra de diagnóstico foi encontrada para este contexto.',
+
+        debug: {
+          sessionId,
+          contextId: session.context_id,
+          answers,
+          rulesFound: 0,
+        },
+      });
+    }
 
     /*
      * ============================================================
-     * 5. ENCONTRAR REGRA COMPATÍVEL
+     * 7. ENCONTRAR REGRA COMPATÍVEL
      * ============================================================
      */
 
     let matchedRule: any = null;
 
-    for (const rule of rules || []) {
+    for (const rule of rules) {
       const questionId =
         String(rule.question_id);
 
@@ -233,14 +300,24 @@ export async function POST(request: Request) {
         answers[questionId];
 
       console.log(
+        '========================================'
+      );
+
+      console.log(
         'RULE CHECK:',
         {
+          ruleId: rule.id,
           questionId,
           answer,
-          expected:
-            rule.answer_value,
+          expected: rule.answer_value,
+          status: rule.status,
+          contextId: rule.context_id,
+          fixId: rule.fix_id,
+          priority: rule.priority,
+
           normalizedAnswer:
             normalizeAnswer(answer),
+
           normalizedExpected:
             normalizeAnswer(
               rule.answer_value
@@ -256,9 +333,19 @@ export async function POST(request: Request) {
           )
       ) {
         matchedRule = rule;
+
+        console.log(
+          'MATCH FOUND:',
+          matchedRule
+        );
+
         break;
       }
     }
+
+    console.log(
+      '========================================'
+    );
 
     console.log(
       'MATCHED RULE:',
@@ -267,7 +354,7 @@ export async function POST(request: Request) {
 
     /*
      * ============================================================
-     * 6. NENHUMA REGRA ENCONTRADA
+     * 8. NENHUMA REGRA COMPATÍVEL
      * ============================================================
      */
 
@@ -281,14 +368,34 @@ export async function POST(request: Request) {
 
         message:
           'Ainda não encontramos uma solução específica para suas respostas.',
+
+        debug: {
+          sessionId,
+          contextId: session.context_id,
+          answers,
+          rulesFound: rules.length,
+          rules: rules.map((rule: any) => ({
+            id: rule.id,
+            question_id: rule.question_id,
+            answer_value: rule.answer_value,
+            context_id: rule.context_id,
+            status: rule.status,
+            fix_id: rule.fix_id,
+          })),
+        },
       });
     }
 
     /*
      * ============================================================
-     * 7. BUSCAR FIX
+     * 9. BUSCAR FIX
      * ============================================================
      */
+
+    console.log(
+      'SEARCHING FIX:',
+      matchedRule.fix_id
+    );
 
     const {
       data: fix,
@@ -300,11 +407,17 @@ export async function POST(request: Request) {
         'id',
         matchedRule.fix_id
       )
-      .eq(
-        'status',
-        'published'
-      )
       .single();
+
+    console.log(
+      'FIX RESULT:',
+      fix
+    );
+
+    console.log(
+      'FIX ERROR:',
+      fixError
+    );
 
     if (fixError) {
       console.error(
@@ -333,7 +446,7 @@ export async function POST(request: Request) {
 
     /*
      * ============================================================
-     * 8. FINALIZAR SESSÃO
+     * 10. FINALIZAR SESSÃO
      * ============================================================
      */
 
@@ -369,7 +482,7 @@ export async function POST(request: Request) {
 
     /*
      * ============================================================
-     * 9. RETORNAR RESULTADO
+     * 11. RETORNAR RESULTADO
      * ============================================================
      */
 
